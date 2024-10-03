@@ -22,8 +22,7 @@ const Home = () => {
 
     return (
         <div>
-            <img src="/image/mainpage-bg.png"/>
-            <h1 className="title">Welcome to the Next.js App</h1>
+            <h1 className="title">userLogin</h1>
             {/*message가 세팅되는자리 */}
             <p className="title-sub">{data ? data : 'Loading...'}</p>
         </div>
