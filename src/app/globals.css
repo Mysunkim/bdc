@@ -23,3 +23,17 @@ body{
   margin-right: 10px;
   text-decoration: none;
 }
+
+/* 첫 번째 버튼 그룹 전체 숨기기 (오늘, 이전, 다음) */
+.rbc-toolbar .rbc-btn-group:nth-child(1) button {
+  display: none !important;
+}
+
+/* 활성화된 (rbc-active) 버튼 숨기기 */
+.rbc-toolbar .rbc-btn-group .rbc-active {
+  display: none !important;
+}
+/* 나머지버튼 숨김 */
+.rbc-toolbar button {
+  display: none !important;
+}
