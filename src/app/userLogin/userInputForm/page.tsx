@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TextField, Button, Typography, Container } from '@mui/material';
-const userLogin = () => {
+const create = () => {
     const [data, setData] = useState<string | null>(null);
     const router = useRouter();
     useEffect(() => {
@@ -21,17 +21,15 @@ const userLogin = () => {
 
         fetchData();
     }, []);
-    //로그인하는함수
-
-    // 페이지 이동 처리 함수
-    const userFormToMove = () => {
-        router.push('/userLogin/userInputForm');  // 회원가입 페이지로 이동
+    const userFormToHome = () => {
+        alert('Welcome to OurClub');
+        router.push('/');  // 홈으로이동
     };
     return (
         <div>
             <Container maxWidth="xs">
             <Typography variant="h4" component="h1" gutterBottom>
-                会員ログイン
+                新規登録
             </Typography>
             <form>
                 <TextField
@@ -39,7 +37,26 @@ const userLogin = () => {
                     fullWidth
                     margin="normal"
                     name="userid"
-                    label="id"
+                    label="お名前"
+                    placeholder="わかなひろゆし"
+                    sx={{ opacity: 1 }} 
+                />
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="パスワード"
+                    label="Password"
+                    type="password"
+                    placeholder="1234!@#ab"
+                    sx={{ opacity: 0.8 }} 
+                />
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="useremail"
+                    label="メール"
                     placeholder="abcde@gmail.com"
                     sx={{ opacity: 1 }} 
                 />
@@ -47,20 +64,12 @@ const userLogin = () => {
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    name="userpassword"
-                    label="Password"
-                    type="password"
-                    placeholder="1234!@#ab"
+                    name="userphone"
+                    label="電話番号"
+                    type="電話番号"
+                    placeholder="09012340000"
                     sx={{ opacity: 0.8 }} 
                 />
-                <Button 
-                    type="submit" 
-                    variant="contained" 
-                    color="primary" 
-                    fullWidth
-                >
-                    ログイン
-                </Button>
             </form>
         </Container>
         <Container maxWidth="xs">
@@ -71,13 +80,13 @@ const userLogin = () => {
                     variant="contained" 
                     color="secondary" 
                     fullWidth
-                    onClick={userFormToMove} 
+                    onClick={userFormToHome} 
                 >
-                    新規登録
+                    登録
                 </Button>
         </Container>
         </div>
     );
 };
 
-export default userLogin;
+export default create;
