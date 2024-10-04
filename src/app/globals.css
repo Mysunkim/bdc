@@ -73,3 +73,27 @@ body{
   justify-content: flex-start; /* 왼쪽 정렬 */
   gap: 16px; /* 카드 사이의 간격 */
 }
+
+/* 소개글css */
+.mainbox {
+  width: 610px;
+  padding: 30px;
+  margin: 30px;
+  margin-right:auto;
+  margin-left: auto;
+  border: 1px soild black;
+  box-shadow: 0 1px 20px 0 reba(0, 0, 0, 0.2);
+}
+.mainbox intro_title{
+  font-size:16px;
+  color:#7c7c7c;
+  font-weight: bold;
+  float: right;
+  line-height: 16px;
+}
+.mainbox subtext{
+  font-size: 13px;
+  color:#3a3a3a;
+  padding-left:16px;
+  margin-bottom:8px;
+}
