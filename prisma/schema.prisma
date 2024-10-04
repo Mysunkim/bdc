@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model t_event {
+  event_id          Int       @id @default(autoincrement())
+  event_title       String    @db.VarChar(100)
+  event_content     String    @db.Text
+  event_location    String?   @db.VarChar(100)
+  event_create_date DateTime? @default(now()) @db.DateTime(0)
+  event_edit_date   DateTime? @default(now()) @db.DateTime(0)
+  event_delete_date DateTime? @db.DateTime(0)
+}
+
+model t_gallery {
+  gallery_id          Int       @id @default(autoincrement())
+  gallery_title       String    @db.VarChar(100)
+  gallery_content     String    @db.Text
+  gallery_image       String?   @db.VarChar(255)
+  gallery_writer      String    @db.VarChar(100)
+  gallery_create_date DateTime? @default(now()) @db.DateTime(0)
+  gallery_edit_date   DateTime? @default(now()) @db.DateTime(0)
+  gallery_delete_date DateTime? @db.DateTime(0)
+}
+
+model t_user {
+  user_id          Int       @id @default(autoincrement())
+  user_name        String    @db.VarChar(100)
+  user_address     String?   @db.VarChar(255)
+  user_email       String    @unique(map: "user_email") @db.VarChar(100)
+  user_phonenumber String?   @db.VarChar(20)
+  user_nickname    String?   @unique(map: "user_nickname") @db.VarChar(50)
+  user_create_date DateTime? @default(now()) @db.DateTime(0)
+  user_edit_date   DateTime? @default(now()) @db.DateTime(0)
+  user_delete_date DateTime? @db.DateTime(0)
+}
