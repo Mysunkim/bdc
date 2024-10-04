@@ -2,9 +2,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TextField, Button, Typography, Container } from '@mui/material';
-const userLogin = () => {
+import UploadForm from '@/app/UploadComponent';
+const gallerycreate = () => {
     const [data, setData] = useState<string | null>(null);
     const router = useRouter();
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -21,46 +23,36 @@ const userLogin = () => {
 
         fetchData();
     }, []);
-    //로그인하는함수
-
-    // 페이지 이동 처리 함수
-    const userFormToMove = () => {
-        router.push('/userLogin/InputForm');  // 회원가입 페이지로 이동
+    const userFormToHome = () => {
+        alert('Welcome to OurClub');
+        router.push('/');  // 홈으로이동
     };
     return (
         <div>
             <Container maxWidth="xs">
             <Typography variant="h4" component="h1" gutterBottom>
-                会員ログイン
+                新規登録
             </Typography>
             <form>
                 <TextField
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    name="userid"
-                    label="id"
-                    placeholder="abcde@gmail.com"
+                    name="title"
+                    label="タイトル"
+                    placeholder="タイトル"
                     sx={{ opacity: 1 }} 
                 />
-                <TextField
+               <TextField
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    name="userpassword"
-                    label="Password"
-                    type="password"
-                    placeholder="1234!@#ab"
-                    sx={{ opacity: 0.8 }} 
+                    name="content"
+                    label="内容"
+                    placeholder="内容"
+                    sx={{ opacity: 1 }} 
                 />
-                <Button 
-                    type="submit" 
-                    variant="contained" 
-                    color="primary" 
-                    fullWidth
-                >
-                    ログイン
-                </Button>
+                <UploadForm/>
             </form>
         </Container>
         <Container maxWidth="xs">
@@ -71,13 +63,13 @@ const userLogin = () => {
                     variant="contained" 
                     color="secondary" 
                     fullWidth
-                    onClick={userFormToMove} 
+                    onClick={userFormToHome} 
                 >
-                    新規登録
+                    登録
                 </Button>
         </Container>
         </div>
     );
 };
 
-export default userLogin;
+export default gallerycreate;
