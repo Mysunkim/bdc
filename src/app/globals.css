@@ -23,6 +23,34 @@ body{
   margin-right: 10px;
   text-decoration: none;
 }
+.nav-button {
+  padding: 10px 15px; /* 버튼 패딩 */
+  border-radius: 5px; /* 모서리 둥글게 */
+  color: white; /* 텍스트 색상 */
+  text-decoration: none; /* 링크의 기본 밑줄 제거 */
+  font-weight: bold; /* 텍스트 두껍게 */
+  transition: background-color 0.3s; /* 배경색 변화 효과 */
+}
+
+.home {
+  background-color: #007bff; /* 홈 버튼 색상 */
+}
+
+.club-event {
+  background-color: #28a745; /* 클럽 이벤트 버튼 색상 */
+}
+
+.gallery {
+  background-color: #ffc107; /* 갤러리 버튼 색상 */
+}
+
+.about-us {
+  background-color: #17a2b8; /* 우리에 대해 버튼 색상 */
+}
+
+.user-login {
+  background-color: #dc3545; /* 사용자 버튼 색상 */
+}
 
 /* 첫 번째 버튼 그룹 전체 숨기기 (오늘, 이전, 다음) */
 .rbc-toolbar .rbc-btn-group:nth-child(1) button {
@@ -36,4 +64,12 @@ body{
 /* 나머지버튼 숨김 */
 .rbc-toolbar button {
   display: none !important;
+}
+
+/*카드 css*/
+.cards-container {
+  display: flex; /* Flexbox 사용 */
+  flex-wrap: wrap; /* 카드가 공간이 없을 때 다음 줄로 감싸기 */
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  gap: 16px; /* 카드 사이의 간격 */
 }

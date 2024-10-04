@@ -27,13 +27,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-      <div className="navbar">
-        <Link href="/">홈</Link>
-        <Link href="/clubEvent">클럽이벤트</Link>
-        <Link href="/gallery">활동내역</Link>
-        <Link href="/aboutUs">우리에대해서</Link>
-        <Link href="/userLogin">유저에대해서</Link>
-      </div>
+        <div className="navbar">
+          <Link href="/" className="nav-button home">ホーム</Link>
+          <Link href="/clubEvent" className="nav-button club-event">サークルイベント</Link>
+          <Link href="/gallery" className="nav-button gallery">活動内容</Link>
+          <Link href="/aboutUs" className="nav-button about-us">私たちについて</Link>
+          <Link href="/userLogin" className="nav-button user-login">ユーザー</Link>
+        </div>
         {children}
       </body>
     </html>
