@@ -19,6 +19,12 @@ body{
   display: flex; /* 링크를 가로로 나열 */
   gap: 10px; /* 링크 사이의 간격 */
 }
+.navbar span{
+  background-color: #f8f9fa; /* 원하는 배경색 */
+  padding: 10px; /* 여백 */
+  display: flex; /* 링크를 가로로 나열 */
+  color:#303030;
+}
 .navbar a {
   margin-right: 10px;
   text-decoration: none;

@@ -13,17 +13,3 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { name, email } = body;
-
-  try {
-    const newUser = await prisma.t_user.create({
-      data: { name, email },
-    });
-    return NextResponse.json(newUser);
-  } catch (error) {
-    console.error(error); // 에러 로그
-    return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });
-  }
-}

@@ -33,14 +33,19 @@ export async function POST(req: Request) {
     }
     // 비밀번호 비교
     const passwordMatch = await bcrypt.compare(password, user.user_password);
- 
+    
     if (!passwordMatch) {
       return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
     }
 
     // 비밀번호가 맞으면 JWT 발급
     if (passwordMatch) {
-      const token = jwt.sign({ /* ... */ }, SECRET_KEY, { expiresIn: '1h' });
+      const token = jwt.sign({
+        userId: user.user_id,           // 사용자 ID
+        username: user.user_name,       // 사용자 이름
+        email: user.user_email,         // 사용자 이메일
+        memberId: user.user_memberid,   // 사용자 멤버 ID
+      }, SECRET_KEY, { expiresIn: '1h' });
       return NextResponse.json({ token });
   } else {
       return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
