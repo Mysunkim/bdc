@@ -22,27 +22,23 @@ const UserLogin = () => {
                 body: JSON.stringify({ member_id: userId, password: userPassword }),
             });
 
-            const data = await response.json();
+            // response.ok를 먼저 확인하고 에러 처리를 위해 다른 경로로 나뉘게 처리
             if (response.ok) {
+                const data = await response.json(); // 여기서 JSON 파싱
                 // JWT 토큰을 localStorage에 저장
                 localStorage.setItem('token', data.token);
 
-
                 // 로그인 성공 시 상태 업데이트
                 setIsLogin(true); 
+                alert('로그인 성공!');
                 setMessage(data.message);
 
                 // 리디렉션
                 router.push('/'); // 대시보드로 이동 (예시)
-              } else {
-                setError(data.error); // 오류 메시지 출력
+            } else {
+                const errorData = await response.json(); // 에러 응답의 JSON 파싱
+                setError(errorData.error); // 오류 메시지 출력
               }
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const result = await response.json();
-            setMessage(result.message);
         } catch (error) {
             console.error('Error fetching data:', error);
             setMessage('Login failed. Please try again.'); // 에러 메시지 표시
