@@ -2,72 +2,98 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TextField, Button, Typography, Container } from '@mui/material';
-const userLogin = () => {
-    const [data, setData] = useState<string | null>(null);
+
+const UserLogin = () => {
+    const [userId, setUserId] = useState('');
+    const [userPassword, setUserPassword] = useState('');
+    const [message, setMessage] = useState<string | null>(null);
     const router = useRouter();
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('/api/data');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const result = await response.json();
-                setData(result.message);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
+    const [isLogin, setIsLogin] = useState(false);
+    const [error, setError] = useState('');
 
-        fetchData();
-    }, []);
-    //로그인하는함수
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault(); // 기본 제출 동작 방지
+        try {
+            const response = await fetch('/api/loginfnc', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ member_id: userId, password: userPassword }),
+            });
 
-    // 페이지 이동 처리 함수
-    const userFormToMove = () => {
-        router.push('/userLogin/InputForm');  // 회원가입 페이지로 이동
+            // response.ok를 먼저 확인하고 에러 처리를 위해 다른 경로로 나뉘게 처리
+            if (response.ok) {
+                const data = await response.json(); // 여기서 JSON 파싱
+                // JWT 토큰을 localStorage에 저장
+                localStorage.setItem('token', data.token);
+
+                // 로그인 성공 시 상태 업데이트
+                setIsLogin(true); 
+                alert('로그인 성공!');
+                setMessage(data.message);
+
+                // 리디렉션
+                router.push('/'); // 대시보드로 이동 (예시)
+            } else {
+                const errorData = await response.json(); // 에러 응답의 JSON 파싱
+                setError(errorData.error); // 오류 메시지 출력
+              }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setMessage('Login failed. Please try again.'); // 에러 메시지 표시
+        }
     };
+
+    const userFormToMove = () => {
+        router.push('/userLogin/InputForm'); // 회원가입 페이지로 이동
+    };
+
     return (
         <div>
             <Container maxWidth="xs">
-            <Typography variant="h4" component="h1" gutterBottom>
-                会員ログイン
-            </Typography>
-            <form>
-                <TextField
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    name="userid"
-                    label="id"
-                    placeholder="abcde@gmail.com"
-                    sx={{ opacity: 1 }} 
-                />
-                <TextField
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    name="userpassword"
-                    label="Password"
-                    type="password"
-                    placeholder="1234!@#ab"
-                    sx={{ opacity: 0.8 }} 
-                />
+                <Typography variant="h4" component="h1" gutterBottom>
+                    会員ログイン
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        name="userId"
+                        label="ID"
+                        placeholder="abcde"
+                        value={userId}
+                        onChange={(e) => setUserId(e.target.value)} // ID 상태 업데이트
+                    />
+                    <TextField
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        name="userPassword"
+                        label="Password"
+                        type="password"
+                        placeholder="1234!@#ab"
+                        value={userPassword}
+                        onChange={(e) => setUserPassword(e.target.value)} // 비밀번호 상태 업데이트
+                    />
+                    <Button 
+                        type="submit" 
+                        variant="contained" 
+                        color="primary" 
+                        fullWidth
+                    >
+                        ログイン
+                    </Button>
+                </form>
+                {message && (
+                    <Typography variant="body2" color="error" align="center">
+                        {message}
+                    </Typography>
+                )}
+            </Container>
+            <Container maxWidth="xs">
                 <Button 
-                    type="submit" 
-                    variant="contained" 
-                    color="primary" 
-                    fullWidth
-                >
-                    ログイン
-                </Button>
-            </form>
-        </Container>
-        <Container maxWidth="xs">
-            <Typography variant="h4" component="h1" gutterBottom>
-            </Typography>
-                <Button 
-                    type="submit" 
                     variant="contained" 
                     color="secondary" 
                     fullWidth
@@ -75,9 +101,9 @@ const userLogin = () => {
                 >
                     新規登録
                 </Button>
-        </Container>
+            </Container>
         </div>
     );
 };
 
-export default userLogin;
+export default UserLogin;

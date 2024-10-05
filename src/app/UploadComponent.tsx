@@ -10,7 +10,7 @@ const UploadForm = () => {
         }
     };
 
-    const handleSubmit = async (event: React.FormEvent) => {
+    const upLoadhandleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         if (!file) return;
@@ -35,7 +35,7 @@ const UploadForm = () => {
     };
 
     return (
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+        <Box component="form" onSubmit={upLoadhandleSubmit} sx={{ mt: 2 }}>
           <input type="file" onChange={handleFileChange} />
             <Button 
                 type="submit" 

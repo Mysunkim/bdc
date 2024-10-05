@@ -38,4 +38,6 @@ model t_user {
   user_create_date DateTime? @default(now()) @db.DateTime(0)
   user_edit_date   DateTime? @default(now()) @db.DateTime(0)
   user_delete_date DateTime? @db.DateTime(0)
+  user_memberid    String?   @unique @db.VarChar(100)
+  user_password    String?   @db.VarChar(255)
 }
