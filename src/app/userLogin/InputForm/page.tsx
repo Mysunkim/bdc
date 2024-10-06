@@ -1,55 +1,86 @@
 "use client"; 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import { TextField, Button, Typography, Container } from '@mui/material';
-const create = () => {
-    const [data, setData] = useState<string | null>(null);
-    const router = useRouter();
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('/api/data');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const result = await response.json();
-                setData(result.message);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
+const RegisterForm = () => {
+    const [username, setUsername] = useState('');
+    const [memberid, setMemberId] = useState('');
+    const [userpassword, setUserPassword] = useState('');
+    const [useremail, setUserEmail] = useState('');
+    const [userphone, setUserPhone] = useState('');
+    const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
 
-        fetchData();
-    }, []);
-    const userFormToHome = () => {
-        alert('Welcome to OurClub');
-        router.push('/');  // 홈으로이동
+        try {
+            const response = await fetch('/api/users/new', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username,
+                    memberid,
+                    userpassword,
+                    useremail,
+                    userphone,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            setMessage(result.message);
+        } catch (error: any) {
+            console.error('Error registering user:', error);
+            setError('会員登録に失敗しました');
+        }
     };
+
     return (
-        <div>
-            <Container maxWidth="xs">
+        <Container maxWidth="xs">
             <Typography variant="h4" component="h1" gutterBottom>
                 新規登録
             </Typography>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <TextField
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    name="userid"
+                    name="username"
                     label="お名前"
                     placeholder="わかなひろゆし"
-                    sx={{ opacity: 1 }} 
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    sx={{ opacity: 1 }}
+                    required
                 />
                 <TextField
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    name="パスワード"
+                    name="memberid"
+                    label="ユーザーID"
+                    placeholder="わかなひろゆし"
+                    value={memberid}
+                    onChange={(e) => setMemberId(e.target.value)}
+                    sx={{ opacity: 1 }}
+                    required
+                />
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="userpassword"
                     label="Password"
                     type="password"
                     placeholder="1234!@#ab"
-                    sx={{ opacity: 0.8 }} 
+                    value={userpassword}
+                    onChange={(e) => setUserPassword(e.target.value)}
+                    sx={{ opacity: 0.8 }}
+                    required
                 />
                 <TextField
                     variant="outlined"
@@ -58,7 +89,10 @@ const create = () => {
                     name="useremail"
                     label="メール"
                     placeholder="abcde@gmail.com"
-                    sx={{ opacity: 1 }} 
+                    value={useremail}
+                    onChange={(e) => setUserEmail(e.target.value)}
+                    sx={{ opacity: 1 }}
+                    required
                 />
                 <TextField
                     variant="outlined"
@@ -66,27 +100,27 @@ const create = () => {
                     margin="normal"
                     name="userphone"
                     label="電話番号"
-                    type="電話番号"
+                    type="tel"
                     placeholder="09012340000"
-                    sx={{ opacity: 0.8 }} 
+                    value={userphone}
+                    onChange={(e) => setUserPhone(e.target.value)}
+                    sx={{ opacity: 0.8 }}
+                    required
                 />
-            </form>
-        </Container>
-        <Container maxWidth="xs">
-            <Typography variant="h4" component="h1" gutterBottom>
-            </Typography>
-                <Button 
-                    type="submit" 
-                    variant="contained" 
-                    color="secondary" 
+                <Button
+                    type="submit"
+                    variant="contained"
                     fullWidth
-                    onClick={userFormToHome} 
+                    color="primary"
+                    sx={{ marginTop: 2 }}
                 >
-                    登録
+                    会員登録
                 </Button>
+            </form>
+            {message && <p>{message}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
         </Container>
-        </div>
     );
-};
+}
 
-export default create;
+export default RegisterForm;
