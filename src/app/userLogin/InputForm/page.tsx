@@ -105,7 +105,6 @@ const RegisterForm = () => {
                     value={userphone}
                     onChange={(e) => setUserPhone(e.target.value)}
                     sx={{ opacity: 0.8 }}
-                    required
                 />
                 <Button
                     type="submit"
