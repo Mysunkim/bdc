@@ -5,17 +5,41 @@ import path from 'path'; // 경로 조작을 위한 모듈
 
 const prisma = new PrismaClient(); // Prisma Client 초기화
 
-export async function GET(req: NextRequest) {
-    try {
-      const galleries = await prisma.t_gallery.findMany(); // t_gallery에서 갤러리 조회
-      return NextResponse.json(galleries);
-    } catch (error) {
-      console.error(error); // 에러 로그
-      return NextResponse.json({ error: 'Failed to fetch galleries' }, { status: 500 });
-    }
-  }
+// Params 타입 정의
+interface Params {
+    id: string; // URL에서 추출할 id는 string 타입입니다.
+}
 
-  export async function POST(req: NextRequest) {
+// formidable 설정
+export const config = {
+    api: {
+        bodyParser: false, // 기본 바디 파서를 비활성화하여 formidable 사용
+    },
+};
+
+//db에서정보얻어오는api
+export async function GET(req: NextRequest, { params }: { params: Params }) {
+    const { id } = params; // URL 파라미터에서 id를 추출
+
+    try {
+        const gallery = await prisma.t_gallery.findUnique({
+            where: { gallery_id: Number(id) }, // id를 숫자로 변환
+        });
+
+        if (!gallery) {
+            return NextResponse.json({ error: 'gallery not found' }, { status: 404 });
+        }
+
+        return NextResponse.json(gallery); // gallery 정보를 반환
+    } catch (error) {
+        console.error(error); // 에러 로그
+        return NextResponse.json({ error: 'Failed to fetch user' }, { status: 500 });
+    }
+}
+
+//정보수정api!!
+export async function PUT(req: NextRequest, { params }: { params: Params }) {
+    const { id } = params; // URL 파라미터에서 id를 추출
 
     try {
         const formData = await req.formData(); // FormData로 변환
@@ -37,8 +61,9 @@ export async function GET(req: NextRequest) {
             gallery_image = `/image/uploads/${file.name}`; // 저장할 경로
         }
 
-        // 데이터베이스에서 gallery 신규등록
-        const createGallery = await prisma.t_gallery.create({
+        // 데이터베이스에서 gallery 정보 수정
+        const updatedGallery = await prisma.t_gallery.update({
+            where: { gallery_id: Number(id) }, // id를 숫자로 변환
             data: {
                 gallery_title,
                 gallery_content,
@@ -46,7 +71,8 @@ export async function GET(req: NextRequest) {
                 gallery_writer,
             },
         });
-        return NextResponse.json(createGallery); // 추가된 갤러리 정보를 반환
+
+        return NextResponse.json(updatedGallery); // 수정된 갤러리 정보를 반환
     } catch (error) {
         console.error(error); // 에러 로그
         return NextResponse.json({ error: 'Failed to update gallery' }, { status: 500 });
