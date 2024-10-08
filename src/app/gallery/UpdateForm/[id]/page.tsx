@@ -96,8 +96,37 @@ const GalleryUpdate = () => {
                 console.error('Error updating user:', error);
             }
         };
+
+      //삭제기능!
+      const deleteHandleSubmit = async (event: React.FormEvent) => {
+          event.preventDefault();
+          try {
+            if (!id) {
+              alert('갤러리 ID가 유효하지 않습니다.');
+              return;
+            }
+        
+            const response = await fetch(`/api/gallery/${id}`, {
+              method: 'DELETE', // 삭제 요청
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+        
+            if (!response.ok) {
+              throw new Error(`Error: ${response.statusText}`);
+            }
+        
+            alert('갤러리가 성공적으로 삭제되었습니다!');
+            // 삭제 후 리다이렉션 또는 다른 작업 처리
+            // 예시: router.push('/gallery-list'); 
+          } catch (error: any) {
+            console.error('Error deleting gallery:', error);
+            alert('갤러리 삭제 중 오류가 발생했습니다.');
+          }
+        };
     return (
-<Container>
+          <Container>
             <Typography variant="h4">情報更新</Typography>
             <form onSubmit={handleSubmit}>
                 <TextField
@@ -114,30 +143,34 @@ const GalleryUpdate = () => {
                     fullWidth
                     margin="normal"
                 />
-<TextField
-    name="gallery_writer" // 공백 제거
-    value={gallery.gallery_writer}
-    onChange={handleChange}
-    fullWidth
-    margin="normal"
-/>
-                        {/* 파일 업로드 필드 추가 */}
-            <input
-          type="file"
-          accept="image/*" // 이미지 파일만 선택 가능
-          onChange={handleFileChange}
-        />
+                <TextField
+                    name="gallery_writer" // 공백 제거
+                    value={gallery.gallery_writer}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                />
+                {/* 파일 업로드 필드 추가 */}
+                <input
+                type="file"
+                accept="image/*" // 이미지 파일만 선택 가능
+                onChange={handleFileChange}
+                />
         
-        {/* 선택한 이미지 미리보기 */}
-        {imagePreview && (
-          <div style={{ marginTop: '10px' }}>
-            <img src={imagePreview} alt="Preview" style={{ maxWidth: '100%', maxHeight: '300px' }} />
-          </div>
-        )}
+                {/* 선택한 이미지 미리보기 */}
+                {imagePreview && (
+                <div style={{ marginTop: '10px' }}>
+                  <img src={imagePreview} alt="Preview" style={{ maxWidth: '100%', maxHeight: '300px' }} />
+                </div>
+                )}
+
                 <Button type="submit" variant="contained" color="primary">
                     Update
                 </Button>
             </form>
+            <Button onClick={deleteHandleSubmit} variant="contained" color="primary">
+                    Delete
+                </Button>
         </Container>
     );
 };

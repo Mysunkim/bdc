@@ -78,3 +78,37 @@ export async function PUT(req: NextRequest, { params }: { params: Params }) {
         return NextResponse.json({ error: 'Failed to update gallery' }, { status: 500 });
     }
 }
+
+//delete-api
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+    const { id } = params; // URL 파라미터에서 id 추출
+
+    try {
+        // 데이터베이스에서 해당 갤러리 정보를 조회
+        const gallery = await prisma.t_gallery.findUnique({
+            where: { gallery_id: Number(id) }
+        });
+
+        if (!gallery) {
+            return NextResponse.json({ error: 'Gallery not found' }, { status: 404 });
+        }
+
+        // 이미지 파일 경로 가져오기
+        const galleryImagePath = gallery.gallery_image ? path.join(process.cwd(), 'public','image','uploads', gallery.gallery_image) : null;
+
+        // 데이터베이스에서 갤러리 정보 삭제
+        await prisma.t_gallery.delete({
+            where: { gallery_id: Number(id) }
+        });
+
+        // 이미지 파일 삭제 (파일 경로가 존재하고 파일이 실제로 있을 경우)
+        if (galleryImagePath && fs.existsSync(galleryImagePath)) {
+            fs.unlinkSync(galleryImagePath); // 파일 삭제
+        }
+
+        return NextResponse.json({ message: 'Gallery deleted successfully' });
+    } catch (error) {
+        console.error(error); // 에러 로그
+        return NextResponse.json({ error: 'Failed to delete gallery' }, { status: 500 });
+    }
+}
