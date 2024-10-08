@@ -10,16 +10,15 @@ interface EventRegisterModalProps {
     eventToEdit?: any;
 }
 
-const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, selectedDate,eventToEdit }) => {
+const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, selectedDate }) => {
     //const [selectedDate, setSelectedDate] = useState<Date | null>(null); // 日付の状態を管理
-
     const [event_title, seteventTitle] = useState('');
     const [event_location, seteventLocation] = useState('');
     const [event_content, setUeventContent] = useState('');
-
+    const [eventToEdit,setEventToEdit] = useState<any>(null);
         // 이벤트가 수정 모드일 경우 기존 데이터를 폼에 채워줌
         useEffect(() => {
-            if (eventToEdit) {
+            if (eventToEdit && selectedDate) {
                 seteventTitle(eventToEdit.event_title);
                 seteventLocation(eventToEdit.event_location);
                 setUeventContent(eventToEdit.event_content);
@@ -29,14 +28,36 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
                 seteventLocation('');
                 setUeventContent('');
             }
-        }, [eventToEdit]);
+        }, [eventToEdit, selectedDate]);
+        // API를 통해 선택한 날짜의 이벤트 데이터를 가져오는 함수 작성
+        const fetchEventByDate = async (date: Date) => {
+            try {
+                const response = await fetch(`/api/clubEvent?date=${date.toISOString()}`);
+                const data = await response.json();
+                // 선택한 날짜와 일치하는 이벤트 필터링
+                const filteredEvent = data.find((event: { event_start_date: string }) => 
+                    new Date(event.event_start_date).toDateString() === date.toDateString()
+                );
+        
+                setEventToEdit(filteredEvent || null); // 필터링된 이벤트 설정
+            } catch (error) {
+                console.error("Failed to fetch event data:", error);
+            }
+        };
+
+    // 날짜가 변경될 때마다 fetchEventByDate 호출
+    useEffect(() => {
+        if (selectedDate) {
+            fetchEventByDate(selectedDate);
+    }
+    }, [selectedDate]);
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         try {
             if (eventToEdit) {
                 // 수정 모드일 경우 PUT 요청
-                const response = await fetch(`/api/clubEvent/${eventToEdit.id}`, {
+                const response = await fetch(`/api/clubEvent/clubEventUpdate/${eventToEdit.event_id}`, {
                     method: 'PUT', // 수정 요청
                     headers: {
                         'Content-Type': 'application/json',
@@ -80,6 +101,31 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
         } catch (error: any) {
             console.error('Error registering event:', error);
 
+        }
+    };
+
+    const deleteHandleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+    
+        try {
+            if (eventToEdit) {
+                // 수정 모드일 경우 삭제 요청
+                const response = await fetch(`/api/clubEvent/clubEventUpdate/${eventToEdit.event_id}`, {
+                    method: 'DELETE', // 삭제 요청
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+    
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+    
+                alert('이벤트가 성공적으로 삭제되었습니다!');
+                onClose(); // 성공 후 모달 닫기
+            }
+        } catch (error: any) {
+            console.error('Error deleting event:', error);
         }
     };
     return (
@@ -136,6 +182,9 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
                     </form>
                     <Button onClick={onClose} sx={{ marginTop: 2 }}>
                         閉じる
+                    </Button>
+                    <Button onClick={deleteHandleSubmit} sx={{ marginTop: 2 }} color="error">
+                    이벤트 삭제
                     </Button>
                 </Container>
             </div>

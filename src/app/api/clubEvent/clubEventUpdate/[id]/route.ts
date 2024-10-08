@@ -54,3 +54,19 @@ export async function PUT(req: NextRequest, { params }: { params: Params }) {
         return NextResponse.json({ error: 'Failed to update event' }, { status: 500 });
     }
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: Params }) {
+    const { id } = params; // URL 파라미터에서 id를 추출
+
+    try {
+        // 데이터베이스에서 이벤트 삭제
+        await prisma.t_event.delete({
+            where: { event_id: Number(id) }, // id를 숫자로 변환
+        });
+
+        return NextResponse.json({ message: 'Event deleted successfully' }); // 삭제 성공 메시지 반환
+    } catch (error) {
+        console.error(error); // 에러 로그
+        return NextResponse.json({ error: 'Failed to delete event' }, { status: 500 });
+    }
+}
