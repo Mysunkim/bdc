@@ -4,20 +4,28 @@ import * as React from 'react';
 import CardComponent from '../CardComponent';
 import { Button, Container } from '@mui/material';
 import { useRouter } from 'next/navigation';
+// gallery 항목의 타입 정의
+interface GalleryItem {
+  gallery_id: number;
+  gallery_title: string;
+  gallery_content: string;
+  gallery_image: string;
+  gallery_writer: string;
+}
 
 const gallery = () => {
-    const [data, setData] = useState<string | null>(null);
+  const [gallery, setGallery] = useState<GalleryItem[]>([]);
     const router = useRouter();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('/api/data');
+                const response = await fetch('/api/gallery');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                const result = await response.json();
-                setData(result.message);
+                const data = await response.json();
+                setGallery(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -25,32 +33,9 @@ const gallery = () => {
 
         fetchData();
     }, []);
-    const galleryInputForm = () => {
-        router.push('/gallery/InputForm'); 
+    const galleryRegisterForm = () => {
+        router.push('/gallery/RegisterForm'); 
     };
-    const cardData = [
-        {
-          id: 1, // 고유한 ID 추가
-          title: "Card Title 1",
-          content: "This is the content of the card.",
-          imageSrc: "/image/icon1.png",
-          link: "/gallery/detail/1"
-        },
-        {
-          id: 2, // 고유한 ID 추가
-          title: "Card Title 2",
-          content: "This is the content of the card.",
-          imageSrc: "/image/icon2.png",
-          link: "/gallery/detail/2"
-        },
-        {
-            id: 3, // 고유한 ID 추가
-            title: "Card Title 3",
-            content: "This is the content of the card.",
-            imageSrc: "/image/icon3.png",
-            link: "/gallery/detail/3"
-          }
-      ];
     return (
     <div>
       <div>
@@ -60,22 +45,21 @@ const gallery = () => {
             variant="contained" 
             color="secondary" 
             fullWidth
-            onClick={galleryInputForm} 
+            onClick={galleryRegisterForm} 
             >
             活動登録
-            </Button>
-          </Container>
-        </div>
+          </Button>
+        </Container>
         <div className="cards-container">
-        {cardData.map((card) => (
+        {gallery.map((card) => (
           <CardComponent 
-            key={card.id}
-            title={card.title}
-            content={card.content}
-            imageSrc={card.imageSrc}
-            link={card.link} // 수정된 링크 사용
+            key={card.gallery_id}
+            title={card.gallery_title}
+            content={card.gallery_content}
+            link={`/gallery/detail/${card.gallery_id}`} // 상세 페이지 링크로 수정
           />    
         ))}
+        </div>
       </div>
     </div>
     );

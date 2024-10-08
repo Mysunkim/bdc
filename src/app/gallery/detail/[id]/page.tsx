@@ -1,48 +1,55 @@
-interface Props {
-  params: {
-    id: string;
-  };
+"use client"; 
+
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { Button, Typography } from '@mui/material';
+// gallery 항목의 타입 정의
+interface Gallery {
+  gallery_title: string;
+  gallery_content: string;
+  gallery_image: string;
+  gallery_writer: string;
 }
 
-// 카드 데이터 정의 (예: cardData.js 또는 같은 파일에)
-const cardData = [
-  {
-    id: '1',
-    title: 'Card Title 1',
-    content: 'This is the content of the card 1.',
-    imageSrc: '/image/icon1.png',
-  },
-  {
-    id: '2',
-    title: 'Card Title 2',
-    content: 'This is the content of the card 2.',
-    imageSrc: '/image/icon2.png',
-  },
-  {
-    id: '3',
-    title: 'Card Title 3',
-    content: 'This is the content of the card 3.',
-    imageSrc: '/image/icon3.png',
-  },
-];
-const GalleryDetail = ({ params }: Props) => {
-  const { id } = params;
+const GalleryDetail = () => {
+  const [gallery, setGallery] = useState<Gallery>({
+    gallery_title: '',
+    gallery_content: '',
+    gallery_image: '',
+    gallery_writer: ''
+  });
+    const { id } = useParams();
+    const router = useRouter();
 
-  if (!id) {
-    return <div>Loading...</div>; // ID가 없을 때 처리
-  }
-  // ID에 해당하는 카드 데이터를 찾음
-  const card = cardData.find((card) => card.id === id);
-  return (
-    <div>
-      <div>
-        <h1>Gallery Detail for ID: {id}</h1>
-        <h2>{card!.title}</h2> {/* '!'를 사용하여 card가 반드시 존재한다고 명시 */}
-        <p>{card!.content}</p>
-        <img src={card!.imageSrc} alt={card!.title} />
-      </div>
-    </div>
-  );
+    const fetchGallery = async () => {
+        try {
+            const response = await fetch(`/api/gallery/${id}`);
+            if (!response.ok) throw new Error('Failed to fetch gallery');
+            const data = await response.json();
+            setGallery(data);
+        } catch (error) {
+            console.error('Error fetching gallery:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchGallery();
+    }, [id]);
+
+    if (!gallery) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <div>
+            <Typography variant="h4">{gallery.gallery_title}</Typography>
+            <Typography variant="body1">{gallery.gallery_content}</Typography>
+            <img src={gallery.gallery_image} alt={gallery.gallery_title} />
+            <Button variant="contained" color="primary" onClick={() => router.push(`/gallery/UpdateForm/${id}`)}>
+                수정하기
+            </Button>
+        </div>
+    );
 };
 
 export default GalleryDetail;

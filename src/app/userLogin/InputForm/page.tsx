@@ -1,7 +1,7 @@
 "use client"; 
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container } from '@mui/material';
-const RegisterForm = () => {
+const GalleryRegisterForm = () => {
     const [username, setUsername] = useState('');
     const [memberid, setMemberId] = useState('');
     const [userpassword, setUserPassword] = useState('');
@@ -122,4 +122,4 @@ const RegisterForm = () => {
     );
 }
 
-export default RegisterForm;
+export default GalleryRegisterForm;
