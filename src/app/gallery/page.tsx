@@ -1,19 +1,18 @@
 "use client"; 
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import CardComponent from '../CardComponent';
+import CardComponent from '@/app/component/CardComponent';
 import { Button, Container } from '@mui/material';
 import { useRouter } from 'next/navigation';
 // gallery 항목의 타입 정의
 interface GalleryItem {
   gallery_id: number;
   gallery_title: string;
-  gallery_content: string;
   gallery_image: string;
   gallery_writer: string;
 }
 
-const gallery = () => {
+const Gallery = () => {
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
     const router = useRouter();
 
@@ -34,7 +33,7 @@ const gallery = () => {
         fetchData();
     }, []);
     const galleryRegisterForm = () => {
-        router.push('/gallery/RegisterForm'); 
+        router.push('/gallery/register'); 
     };
     return (
     <div>
@@ -55,8 +54,8 @@ const gallery = () => {
           <CardComponent 
             key={card.gallery_id}
             title={card.gallery_title}
-            content={card.gallery_content}
             link={`/gallery/detail/${card.gallery_id}`} // 상세 페이지 링크로 수정
+            writer={card.gallery_writer}
           />    
         ))}
         </div>
@@ -65,4 +64,4 @@ const gallery = () => {
     );
 };
 
-export default gallery;
+export default Gallery;

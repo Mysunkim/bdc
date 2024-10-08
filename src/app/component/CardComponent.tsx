@@ -3,20 +3,21 @@ import { Card, CardContent, Typography, CardMedia  } from '@mui/material';
 import Link from 'next/link';
 interface CardProps {
   title: string;
-  content: string;
+  writer: string;
   link: string; // 링크를 위한 prop 추가
 }
 
-const CardComponent: React.FC<CardProps> = ({ title, content,link }) => {
+const CardComponent: React.FC<CardProps> = ({ title, writer,link }) => {
   return (
     <Link href={link} passHref>
-      <Card sx={{ width: 300, height: 200, margin: '16px' }}>
+      <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <CardContent>
-          <Typography variant="h5" component="div">
+          <Typography variant="h5" component="div" sx={{ marginBottom: '10%'}}>
                 {title}
           </Typography>
+          <Typography variant="h5" component="div"></Typography>
           <Typography variant="body2" color="text.secondary">
-                {content}
+                執筆者：{writer}
           </Typography>
         </CardContent>
       </Card>

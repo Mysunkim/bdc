@@ -1,8 +1,8 @@
 "use client"; 
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container } from '@mui/material';
-import { useParams, useRouter } from 'next/navigation';
-const RegisterForm = () => {
+import { useRouter } from 'next/navigation';
+const GalleryRegister = () => {
 // gallery 항목의 타입 정의
 interface Gallery {
     gallery_title: string;
@@ -32,7 +32,6 @@ interface Gallery {
     
     // 선택한 파일의 미리보기 생성
     if (file) {
-      console.log('Selected file:', file); // 콘솔에 파일 정보 출력
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -63,12 +62,11 @@ interface Gallery {
               });
         
         if (response.ok) {
-        alert('情報が更新出来ました。！');
-        router.push('/'); // 성공 페이지로 리디렉션 예시
+          alert('情報が更新出来ました。！');
+          router.push('/'); // 성공 페이지로 리디렉션 예시
         
         } else {
-        
-        alert('情報が更新出来なかったです。！');
+          alert('情報が更新出来なかったです。！');
           }
         } catch (error) {
         console.error('Error updating user:', error);
@@ -76,9 +74,8 @@ interface Gallery {
     };
     return (
         <Container maxWidth="xs">
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography variant="h4" component="h1" gutterBottom/>
                 新規登録
-            </Typography>
             <form onSubmit={handleSubmit}>
                 <TextField
                     variant="outlined"
@@ -144,12 +141,11 @@ interface Gallery {
                     fullWidth
                     color="primary"
                     sx={{ marginTop: 2 }}
-                >
-                    内容登録
-                </Button>
+                />
+                  内容登録
             </form>
         </Container>
     );
 }
 
-export default RegisterForm;
+export default GalleryRegister;

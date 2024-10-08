@@ -19,12 +19,14 @@ const GalleryUpdate = () => {
     gallery_image: '',
     gallery_writer: ''
   });
-    const { id } = useParams();
-    const router = useRouter();
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const fetchGallery = async () => {
-        try {
+  
+  const { id } = useParams();
+  const router = useRouter();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fetchGallery = async () => {
+        
+    try {
             const response = await fetch(`/api/gallery/${id}`);
             if (!response.ok) throw new Error('Failed to fetch gallery');
             const data = await response.json();
@@ -34,18 +36,18 @@ const GalleryUpdate = () => {
         }
     };
 
-    useEffect(() => {
+  useEffect(() => {
         fetchGallery();
-    }, [id]);
+  }, [id]);
 
-    if (!gallery) {
-        return <div>Loading...</div>;
-    }
+  if (!gallery) {
+      return <div>Loading...</div>;
+  }
 
-    // 입력 값 변경 핸들러
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setGallery({ ...gallery, [e.target.name]: e.target.value });
-    };
+  // 입력 값 변경 핸들러
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setGallery({ ...gallery, [e.target.name]: e.target.value });
+  };
 
   // 파일 선택 핸들러
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +56,6 @@ const GalleryUpdate = () => {
     
     // 선택한 파일의 미리보기 생성
     if (file) {
-      console.log('Selected file:', file); // 콘솔에 파일 정보 출력
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -62,24 +63,26 @@ const GalleryUpdate = () => {
       reader.readAsDataURL(file);
     } else {
       setImagePreview(null);
-    }
+      }
     };
     
-    // 폼 제출 핸들러
-    const handleSubmit = async (e: React.FormEvent) => {
-        const formData = new FormData(); // FormData 객체 생성
+  // 폼 제출 핸들러
+  const handleSubmit = async (e: React.FormEvent) => {
+      // FormData 객체 생성
+      const formData = new FormData();
 
-        // gallery 데이터 추가
-        formData.append('gallery_title', gallery.gallery_title);
-        formData.append('gallery_content', gallery.gallery_content);
-        formData.append('gallery_writer', gallery.gallery_writer);
+      // gallery 데이터 추가
+      formData.append('gallery_title', gallery.gallery_title);
+      formData.append('gallery_content', gallery.gallery_content);
+      formData.append('gallery_writer', gallery.gallery_writer);
 
-        // 이미지 파일이 선택된 경우 추가
-        if (selectedFile) {
-          formData.append('gallery_image', selectedFile);
-        }
-        e.preventDefault();
-            try {
+      // 이미지 파일이 선택된 경우 추가
+      if (selectedFile) {
+        formData.append('gallery_image', selectedFile);
+      }
+        
+      e.preventDefault();
+          try {
                 // PUT 요청으로 사용자 데이터 수정
                 const response = await fetch(`/api/gallery/${id}`, {
                     method: 'PUT',
@@ -97,10 +100,10 @@ const GalleryUpdate = () => {
             }
         };
 
-      //삭제기능!
-      const deleteHandleSubmit = async (event: React.FormEvent) => {
-          event.preventDefault();
-          try {
+  //삭제기능!
+  const deleteHandleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+        try {
             if (!id) {
               alert('갤러리 ID가 유효하지 않습니다.');
               return;
@@ -128,7 +131,7 @@ const GalleryUpdate = () => {
     return (
           <Container>
             <Typography variant="h4">情報更新</Typography>
-            <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}>
                 <TextField
                     name="gallery_title"
                     value={gallery.gallery_title}
@@ -159,18 +162,17 @@ const GalleryUpdate = () => {
         
                 {/* 선택한 이미지 미리보기 */}
                 {imagePreview && (
-                <div style={{ marginTop: '10px' }}>
+                <div style={{ display:'flex' }}>
                   <img src={imagePreview} alt="Preview" style={{ maxWidth: '100%', maxHeight: '300px' }} />
                 </div>
                 )}
-
-                <Button type="submit" variant="contained" color="primary">
+                <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-start', gap: '10px' }}>
+                  <Button type="submit" variant="contained" color="primary"/>
                     Update
-                </Button>
-            </form>
-            <Button onClick={deleteHandleSubmit} variant="contained" color="primary">
+                  <Button onClick={deleteHandleSubmit} variant="contained" color="primary"/>
                     Delete
-                </Button>
+                </div>
+              </form>
         </Container>
     );
 };

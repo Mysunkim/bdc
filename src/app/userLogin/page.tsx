@@ -1,5 +1,5 @@
 "use client"; 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TextField, Button, Typography, Container } from '@mui/material';
 
@@ -45,8 +45,8 @@ const UserLogin = () => {
         }
     };
 
-    const userFormToMove = () => {
-        router.push('/userLogin/InputForm'); // 회원가입 페이지로 이동
+    const usersregister = () => {
+        router.push('/users/register'); // 회원가입 페이지로 이동
     };
 
     return (
@@ -82,9 +82,8 @@ const UserLogin = () => {
                         variant="contained" 
                         color="primary" 
                         fullWidth
-                    >
-                        ログイン
-                    </Button>
+                    />
+                    ログイン
                 </form>
                 {message && (
                     <Typography variant="body2" color="error" align="center">
@@ -97,10 +96,9 @@ const UserLogin = () => {
                     variant="contained" 
                     color="secondary" 
                     fullWidth
-                    onClick={userFormToMove} 
-                >
-                    新規登録
-                </Button>
+                    onClick={usersregister} 
+                />
+                新規登録
             </Container>
         </div>
     );
