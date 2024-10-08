@@ -15,6 +15,7 @@ model t_event {
   event_create_date DateTime? @default(now()) @db.DateTime(0)
   event_edit_date   DateTime? @default(now()) @db.DateTime(0)
   event_delete_date DateTime? @db.DateTime(0)
+  event_start_date  DateTime?
 }
 
 model t_gallery {
