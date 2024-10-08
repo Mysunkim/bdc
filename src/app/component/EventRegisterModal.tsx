@@ -57,7 +57,7 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
         try {
             if (eventToEdit) {
                 // 수정 모드일 경우 PUT 요청
-                const response = await fetch(`/api/clubEvent/clubEventUpdate/${eventToEdit.event_id}`, {
+                const response = await fetch(`/api/clubEvent/update/${eventToEdit.event_id}`, {
                     method: 'PUT', // 수정 요청
                     headers: {
                         'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
                 alert('이벤트가 성공적으로 수정되었습니다!');
             } else {
                 // 등록 모드일 경우 POST 요청
-                const response = await fetch('/api/clubEvent/clubEventRegister', {
+                const response = await fetch('/api/clubEvent/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
         try {
             if (eventToEdit) {
                 // 수정 모드일 경우 삭제 요청
-                const response = await fetch(`/api/clubEvent/clubEventUpdate/${eventToEdit.event_id}`, {
+                const response = await fetch(`/api/clubEvent/update/${eventToEdit.event_id}`, {
                     method: 'DELETE', // 삭제 요청
                     headers: {
                         'Content-Type': 'application/json',
@@ -132,60 +132,59 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
         <Modal open={open} onClose={onClose}>
             <div style={{ padding: '20px', background: 'white', margin: '100px auto', maxWidth: '400px' }}>
                 <Container maxWidth="xs">
-                    <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'black' }}>
+                    <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'black' }}/>
                     {eventToEdit ? 'イベント登録' : 'イベント修正'}
-                    </Typography>
                     <form onSubmit={handleSubmit}>
-                    <TextField
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        name="event_title"
-                        label="イベントタイトル"
-                        placeholder="わかなひろゆし"
-                        sx={{ opacity: 1 }}
-                        value={event_title}
-                        onChange={(e) => seteventTitle(e.target.value)}
-                    />
-                    <TextField
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        name="event_location"
-                        label="場所"
-                        placeholder="東体育館"
-                        sx={{ opacity: 1 }}
-                        value={event_location}
-                        onChange={(e) => seteventLocation(e.target.value)}
-                    />
-                    <TextField
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        name="event_content"
-                        label="内容"
-                        placeholder="ゲーム"
-                        sx={{ opacity: 1 }}
-                        value={event_content}
-                        onChange={(e) => setUeventContent(e.target.value)}
-                    />
+                        <TextField
+                            variant="outlined"
+                            fullWidth
+                            margin="normal"
+                            name="event_title"
+                            label="イベントタイトル"
+                            placeholder="わかなひろゆし"
+                            sx={{ opacity: 1 }}
+                            value={event_title}
+                            onChange={(e) => seteventTitle(e.target.value)}
+                        />
+                        <TextField
+                            variant="outlined"
+                            fullWidth
+                            margin="normal"
+                            name="event_location"
+                            label="場所"
+                            placeholder="東体育館"
+                            sx={{ opacity: 1 }}
+                            value={event_location}
+                            onChange={(e) => seteventLocation(e.target.value)}
+                        />
+                        <TextField
+                            variant="outlined"
+                            fullWidth
+                            margin="normal"
+                            name="event_content"
+                            label="内容"
+                            placeholder="ゲーム"
+                            sx={{ opacity: 1 }}
+                            value={event_content}
+                            onChange={(e) => setUeventContent(e.target.value)}
+                        />
 
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        fullWidth
-                        color="primary"
-                        sx={{ marginTop: 2 }}
-                    >
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            fullWidth
+                            color="primary"
+                            sx={{ marginTop: 2 }}
+                        />
                         {eventToEdit ? 'イベント修正' : 'イベント登録'}
-                    </Button>
                     </form>
-                    <Button onClick={onClose} sx={{ marginTop: 2 }}>
+                    <Button onClick={onClose} sx={{ marginTop: 2 }} />
                         閉じる
-                    </Button>
+                    {eventToEdit && (
                     <Button onClick={deleteHandleSubmit} sx={{ marginTop: 2 }} color="error">
-                    이벤트 삭제
+                        Delete
                     </Button>
+                    )}
                 </Container>
             </div>
         </Modal>

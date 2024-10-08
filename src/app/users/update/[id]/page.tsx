@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams,useRouter  } from 'next/navigation';
 import { TextField, Button, Container, Typography } from '@mui/material';
 
-const UpdateForm = () => {
+const UserUpdate = () => {
     const [user, setUser] = useState({ 
         user_name: '',
          user_email: '',
@@ -12,14 +12,11 @@ const UpdateForm = () => {
          user_phonenumber: '',
          user_nickname: '' });
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
     const { id } = useParams();
     const router = useRouter();
 
     const fetchUser = async () => {
-        console.log('User ID from params:', id);
         try {
-            console.log('Fetching user with ID:', id); // ID 확인
             const response = await fetch(`/api/users/${id}`); // API 호출
             if (!response.ok) throw new Error('Failed to fetch user');
             const data = await response.json();
@@ -31,10 +28,8 @@ const UpdateForm = () => {
                 user_nickname: data.user_nickname,
              });
             setLoading(false);
-            console.log(data);
         } catch (error) {
             console.error('Error fetching user:', error);
-            setError('Failed to fetch user data');
             setLoading(false); // 로딩 상태 종료
         }
     };
@@ -122,4 +117,4 @@ const UpdateForm = () => {
     );
 };
 
-export default UpdateForm;
+export default UserUpdate;

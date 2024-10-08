@@ -1,7 +1,7 @@
 "use client"; 
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container } from '@mui/material';
-const GalleryRegisterForm = () => {
+const UserRegister = () => {
     const [username, setUsername] = useState('');
     const [memberid, setMemberId] = useState('');
     const [userpassword, setUserPassword] = useState('');
@@ -13,7 +13,7 @@ const GalleryRegisterForm = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('/api/users/new', {
+            const response = await fetch('/api/users/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -122,4 +122,4 @@ const GalleryRegisterForm = () => {
     );
 }
 
-export default GalleryRegisterForm;
+export default UserRegister;
