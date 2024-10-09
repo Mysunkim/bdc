@@ -78,6 +78,7 @@ body{
   flex-wrap: wrap; /* 카드가 공간이 없을 때 다음 줄로 감싸기 */
   justify-content: flex-start; /* 왼쪽 정렬 */
   gap: 16px; /* 카드 사이의 간격 */
+  margin-top: 20px
 }
 
 /* 소개글css */

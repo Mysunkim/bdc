@@ -141,8 +141,9 @@ interface Gallery {
                     fullWidth
                     color="primary"
                     sx={{ marginTop: 2 }}
-                />
+                 >
                   内容登録
+                </Button>
             </form>
         </Container>
     );

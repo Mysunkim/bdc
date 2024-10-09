@@ -168,23 +168,25 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
                             value={event_content}
                             onChange={(e) => setUeventContent(e.target.value)}
                         />
-
+                    </form>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px' }}>
                         <Button
                             type="submit"
                             variant="contained"
-                            fullWidth
                             color="primary"
                             sx={{ marginTop: 2 }}
-                        />
+                        >
                         {eventToEdit ? 'イベント修正' : 'イベント登録'}
-                    </form>
-                    <Button onClick={onClose} sx={{ marginTop: 2 }} />
-                        閉じる
-                    {eventToEdit && (
-                    <Button onClick={deleteHandleSubmit} sx={{ marginTop: 2 }} color="error">
-                        Delete
-                    </Button>
-                    )}
+                        </Button>
+                        <Button variant="contained" color="primary" onClick={onClose} sx={{ marginTop: 2 }} >
+                            閉じる
+                        </Button>
+                        {eventToEdit && (
+                        <Button variant="contained" color="primary" onClick={deleteHandleSubmit} sx={{ marginTop: 2 }}>
+                            Delete
+                        </Button>
+                        )}
+                    </div>
                 </Container>
             </div>
         </Modal>
