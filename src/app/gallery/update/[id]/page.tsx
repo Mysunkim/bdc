@@ -24,17 +24,17 @@ const GalleryUpdate = () => {
   const router = useRouter();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
   const fetchGallery = async () => {
-        
     try {
-            const response = await fetch(`/api/gallery/${id}`);
-            if (!response.ok) throw new Error('Failed to fetch gallery');
-            const data = await response.json();
-            setGallery(data);
-        } catch (error) {
-            console.error('Error fetching gallery:', error);
-        }
-    };
+      const response = await fetch(`/api/gallery/${id}`);
+      if (!response.ok) throw new Error('Failed to fetch gallery');
+      const data = await response.json();
+      setGallery(data);
+    } catch (error) {
+      console.error('Error fetching gallery:', error);
+    }
+  };
 
   useEffect(() => {
         fetchGallery();
@@ -123,7 +123,7 @@ const GalleryUpdate = () => {
             alert('갤러리가 성공적으로 삭제되었습니다!');
             // 삭제 후 리다이렉션 또는 다른 작업 처리
             // 예시: router.push('/gallery-list'); 
-          } catch (error: any) {
+          } catch (error: unknown) {
             console.error('Error deleting gallery:', error);
             alert('갤러리 삭제 중 오류가 발생했습니다.');
           }
