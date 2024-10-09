@@ -37,7 +37,7 @@ const UserLogin = () => {
                 // 리디렉션
                 router.push('/'); // 대시보드로 이동 (예시)
             } else {
-                const errorData = await response.json(); // 에러 응답의 JSON 파싱
+                await response.json(); // 에러 응답의 JSON 파싱
               }
         } catch (error) {
             console.error('Error fetching data:', error);
