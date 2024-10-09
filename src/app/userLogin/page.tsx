@@ -9,9 +9,6 @@ const UserLogin = () => {
     const [userPassword, setUserPassword] = useState('');
     const [message, setMessage] = useState<string | null>(null);
     const router = useRouter();
-    const [isLogin, setIsLogin] = useState(false);
-    const [error, setError] = useState('');
-    const [token, setToken] = useState(''); // 토큰 상태
     // 토큰 저장 함수
     const saveTokenToCookie = (token : string) => {
         Cookies.set('token', token, { expires: 7 });
@@ -34,8 +31,6 @@ const UserLogin = () => {
                 // JWT 토큰을 localStorage에 저장
                 //localStorage.setItem('token', data.token);
                 saveTokenToCookie(data.token);
-                // 로그인 성공 시 상태 업데이트
-                setIsLogin(true); 
                 alert('로그인 성공!');
                 setMessage(data.message);
 
@@ -43,7 +38,6 @@ const UserLogin = () => {
                 router.push('/'); // 대시보드로 이동 (예시)
             } else {
                 const errorData = await response.json(); // 에러 응답의 JSON 파싱
-                setError(errorData.error); // 오류 메시지 출력
               }
         } catch (error) {
             console.error('Error fetching data:', error);

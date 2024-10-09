@@ -35,7 +35,7 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
                 seteventLocation('');
                 setUeventContent('');
             }
-        }, [eventToEdit, selectedDate]);
+        }, [eventToEdit]);
         // API를 통해 선택한 날짜의 이벤트 데이터를 가져오는 함수 작성
         const fetchEventByDate = async (date: Date) => {
             try {
@@ -45,8 +45,6 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
                 const filteredEvent = data.find((event: { event_start_date: string }) => 
                     new Date(event.event_start_date).toDateString() === date.toDateString()
                 );
-        
-                setEventToEdit(filteredEvent || null); // 필터링된 이벤트 설정
             } catch (error) {
                 console.error("Failed to fetch event data:", error);
             }
@@ -73,7 +71,7 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
                         event_title,
                         event_location,
                         event_content,
-                        event_start: selectedDate || eventToEdit.start, // 수정 시 선택한 날짜 또는 기존 시작 날짜
+                        event_start: selectedDate || eventToEdit.event_start_date, // 수정 시 선택한 날짜 또는 기존 시작 날짜
                     }),
                 });
 
@@ -105,9 +103,10 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
             }
 
             onClose(); // 성공 후 모달 닫기
-        } catch (error: any) {
-            console.error('Error registering event:', error);
-
+        } catch (error) {
+        // error 타입을 Error로 명시
+        const typedError = error as Error; 
+        console.error('Error deleting event:', typedError);
         }
     };
 
@@ -131,8 +130,10 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
                 alert('이벤트가 성공적으로 삭제되었습니다!');
                 onClose(); // 성공 후 모달 닫기
             }
-        } catch (error: any) {
-            console.error('Error deleting event:', error);
+        } catch (error) {
+        // error 타입을 Error로 명시
+        const typedError = error as Error; 
+        console.error('Error deleting event:', typedError);
         }
     };
     return (

@@ -33,7 +33,7 @@ const UserRegister = () => {
 
             const result = await response.json();
             setMessage(result.message);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Error registering user:', error);
             setError('会員登録に失敗しました');
         }

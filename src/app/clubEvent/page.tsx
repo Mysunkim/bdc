@@ -24,7 +24,7 @@ const localizer = dateFnsLocalizer({
     getDay,
     locales,
 });
-const clubEvent = () => {
+const ClubEvent = () => {
     const [events, setEvents] = useState<{ title: string; start: Date; end: Date; location?: string }[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null); // 선택한 날짜 상태
@@ -83,4 +83,4 @@ const clubEvent = () => {
     );
 };
 
-export default clubEvent;
+export default ClubEvent;
