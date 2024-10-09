@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, Typography, CardMedia  } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 import Link from 'next/link';
 interface CardProps {
   title: string;
