@@ -36,31 +36,37 @@ const Gallery = () => {
         router.push('/gallery/register'); 
     };
     return (
-    <div>
       <div>
         <Container maxWidth="xs">
-          <Button 
-            type="submit" 
-            variant="contained" 
-            color="secondary" 
-            fullWidth
-            onClick={galleryRegisterForm} 
+          <div className="cards-container">
+            {gallery.map((card) => (
+              <CardComponent 
+                key={card.gallery_id}
+                title={card.gallery_title}
+                link={`/gallery/detail/${card.gallery_id}`} // 상세 페이지 링크로 수정
+                writer={card.gallery_writer}
+              />    
+            ))}
+          </div>
+          {/* 이 div가 잘못된 위치에 있었습니다 */}
+          <div style={{ position: 'relative', height: '100vh' }}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              onClick={galleryRegisterForm}
+              style={{
+                position: 'absolute',
+                bottom: '20px', // 화면 아래쪽에서 20px 위로
+                left: '50%',    // 가로 중앙 정렬
+                transform: 'translateX(-50%)' // 정렬 보정
+              }}
             >
-            活動登録
-          </Button>
+              活動登録
+            </Button>
+          </div>
         </Container>
-        <div className="cards-container">
-        {gallery.map((card) => (
-          <CardComponent 
-            key={card.gallery_id}
-            title={card.gallery_title}
-            link={`/gallery/detail/${card.gallery_id}`} // 상세 페이지 링크로 수정
-            writer={card.gallery_writer}
-          />    
-        ))}
-        </div>
       </div>
-    </div>
     );
 };
 

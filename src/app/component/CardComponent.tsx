@@ -15,7 +15,6 @@ const CardComponent: React.FC<CardProps> = ({ title, writer,link }) => {
           <Typography variant="h5" component="div" sx={{ marginBottom: '10%'}}>
                 {title}
           </Typography>
-          <Typography variant="h5" component="div"></Typography>
           <Typography variant="body2" color="text.secondary">
                 執筆者：{writer}
           </Typography>

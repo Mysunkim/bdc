@@ -2,12 +2,20 @@
 import { useEffect, useState } from 'react';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+// 쿠키에서 토큰을 가져오는 함수
+const getTokenFromCookie = () => {
+    return Cookies.get('token'); // 쿠키에서 'token'이라는 이름의 값 가져오기
+  };
+
 const ClientUserName = () => {
     const [username, setUsername] = useState<string | null>(null);
     const [userId, setUuserId] = useState<string | null>(null);
     const router = useRouter();
+    const storedToken = getTokenFromCookie();
+    
     useEffect(() => {
-        const storedToken = localStorage.getItem('token');
+        //const storedToken = localStorage.getItem('token');
 
         async function fetchUsername() {
             if (storedToken) {

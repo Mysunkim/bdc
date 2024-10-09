@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TextField, Button, Typography, Container } from '@mui/material';
+import Cookies from 'js-cookie';
 
 const UserLogin = () => {
     const [userId, setUserId] = useState('');
@@ -10,7 +11,12 @@ const UserLogin = () => {
     const router = useRouter();
     const [isLogin, setIsLogin] = useState(false);
     const [error, setError] = useState('');
-    
+    const [token, setToken] = useState(''); // 토큰 상태
+    // 토큰 저장 함수
+    const saveTokenToCookie = (token : string) => {
+        Cookies.set('token', token, { expires: 7 });
+    };
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // 기본 제출 동작 방지
         try {
@@ -26,8 +32,8 @@ const UserLogin = () => {
             if (response.ok) {
                 const data = await response.json(); // 여기서 JSON 파싱
                 // JWT 토큰을 localStorage에 저장
-                localStorage.setItem('token', data.token);
-
+                //localStorage.setItem('token', data.token);
+                saveTokenToCookie(data.token);
                 // 로그인 성공 시 상태 업데이트
                 setIsLogin(true); 
                 alert('로그인 성공!');
@@ -82,8 +88,9 @@ const UserLogin = () => {
                         variant="contained" 
                         color="primary" 
                         fullWidth
-                    />
+                    >
                     ログイン
+                    </Button>
                 </form>
                 {message && (
                     <Typography variant="body2" color="error" align="center">
@@ -97,8 +104,9 @@ const UserLogin = () => {
                     color="secondary" 
                     fullWidth
                     onClick={usersregister} 
-                />
+                >
                 新規登録
+                </Button>
             </Container>
         </div>
     );

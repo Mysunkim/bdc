@@ -47,8 +47,9 @@ const GalleryDetail = () => {
             <Typography variant="body1" className="subtext"/> {gallery.gallery_content}
               <img src={gallery.gallery_image} alt={gallery.gallery_title} />
             <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-start', gap: '10px' }} >
-              <Button variant="contained" color="primary" onClick={() => router.push(`/gallery/update/${id}`)}/>
+              <Button variant="contained" color="primary" onClick={() => router.push(`/gallery/update/${id}`)}>
                 修正
+              </Button>
             </div>
         </div>
     );
