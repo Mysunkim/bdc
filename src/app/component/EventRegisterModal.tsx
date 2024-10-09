@@ -42,7 +42,7 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
                 const response = await fetch(`/api/clubEvent?date=${date.toISOString()}`);
                 const data: Event[] = await response.json();
                 // 선택한 날짜와 일치하는 이벤트 필터링
-                const filteredEvent = data.find((event: { event_start_date: string }) => 
+                data.find((event: { event_start_date: string }) => 
                     new Date(event.event_start_date).toDateString() === date.toDateString()
                 );
             } catch (error) {
