@@ -5,7 +5,7 @@ import path from 'path'; // 경로 조작을 위한 모듈
 
 const prisma = new PrismaClient(); // Prisma Client 초기화
 
-export async function GET(req: NextRequest) {
+export async function GET() {
     try {
       const galleries = await prisma.t_gallery.findMany(); // t_gallery에서 갤러리 조회
       return NextResponse.json(galleries);

@@ -1,26 +1,33 @@
 // components/EventRegisterModal.tsx
 import React, { useState,useEffect } from 'react';
 import { Modal, Button, Container, TextField, Typography } from '@mui/material';
-
+// Event 인터페이스 정의
+interface Event {
+    event_id: number; // 이벤트 ID
+    event_title: string; // 이벤트 제목
+    event_location?: string; // 이벤트 장소 (선택적)
+    event_content: string; // 이벤트 내용
+    event_start_date: string; // 시작 날짜 (ISO 형식)
+}
 
 interface EventRegisterModalProps {
     open: boolean;
     onClose: () => void;
     selectedDate: Date | null;
-    eventToEdit?: any;
+    eventToEdit?:  Event | null; 
 }
 
-const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, selectedDate }) => {
+const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, selectedDate,eventToEdit }) => {
     //const [selectedDate, setSelectedDate] = useState<Date | null>(null); // 日付の状態を管理
     const [event_title, seteventTitle] = useState('');
     const [event_location, seteventLocation] = useState('');
     const [event_content, setUeventContent] = useState('');
-    const [eventToEdit,setEventToEdit] = useState<any>(null);
+    //const [eventToEdit,setEventToEdit] = useState<any>(null);
         // 이벤트가 수정 모드일 경우 기존 데이터를 폼에 채워줌
         useEffect(() => {
             if (eventToEdit && selectedDate) {
                 seteventTitle(eventToEdit.event_title);
-                seteventLocation(eventToEdit.event_location);
+                seteventLocation(eventToEdit.event_location || '');
                 setUeventContent(eventToEdit.event_content);
             } else {
                 // 등록 모드에서는 초기화
@@ -33,7 +40,7 @@ const EventRegisterModal: React.FC<EventRegisterModalProps> = ({ open, onClose, 
         const fetchEventByDate = async (date: Date) => {
             try {
                 const response = await fetch(`/api/clubEvent?date=${date.toISOString()}`);
-                const data = await response.json();
+                const data: Event[] = await response.json();
                 // 선택한 날짜와 일치하는 이벤트 필터링
                 const filteredEvent = data.find((event: { event_start_date: string }) => 
                     new Date(event.event_start_date).toDateString() === date.toDateString()

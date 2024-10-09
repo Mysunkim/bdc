@@ -4,8 +4,14 @@ import { Calendar,dateFnsLocalizer,SlotInfo } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { ja } from 'date-fns/locale'; 
-import { TextField, Button, Typography, Container } from '@mui/material';
 import EventRegisterModal from '@/app/component/EventRegisterModal';
+// Event 인터페이스 정의
+interface Event {
+    event_title: string;
+    event_start_date: string; // ISO 형식의 날짜
+    event_location?: string; // 선택적인 속성
+}
+
 const locales = {
     'ja-JP': ja,
     // 필요한 언어를 추가할 수 있습니다
@@ -19,23 +25,16 @@ const localizer = dateFnsLocalizer({
     locales,
 });
 const clubEvent = () => {
-    const [events, setEvents] = useState([]);
-    const [newEvent, setNewEvent] = useState({
-        title: '',
-        start: new Date(), // 초기 시작 날짜
-        end: new Date(),   // 초기 종료 날짜
-        content: '',       // 이벤트 내용 초기화
-        location: ''       // 이벤트 위치 초기화
-    });
+    const [events, setEvents] = useState<{ title: string; start: Date; end: Date; location?: string }[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null); // 선택한 날짜 상태
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch('/api/clubEvent');
-                const data = await response.json();
+                const data: Event[] = await response.json();
             
-                const formattedEvents = data.map((event: any) => {
+                const formattedEvents = data.map((event: Event) => {
                 const startDate = new Date(event.event_start_date); // ISO 형식의 날짜
                 // 하루의 끝 시간 계산
                 const endDate = new Date(startDate);
@@ -62,11 +61,6 @@ const clubEvent = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
-
-    const eventRegist = () => {
-        handleOpenModal(); // 버튼 클릭 시 모달 열기
-    }
-
     const handleSelectSlot = (slotInfo: SlotInfo) => {
         setSelectedDate(slotInfo.start); // 선택한 날짜 상태에 저장
         handleOpenModal(); // 모달 열기
@@ -82,7 +76,7 @@ const clubEvent = () => {
             selectable
             onSelectSlot={handleSelectSlot}
             />
-                            {/* 모달 컴포넌트 추가 */}
+            {/* 모달 컴포넌트 추가 */}
             <EventRegisterModal open={isModalOpen} onClose={handleCloseModal}  
             selectedDate={selectedDate}/>
         </div>
