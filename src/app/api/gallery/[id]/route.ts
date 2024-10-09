@@ -10,13 +10,6 @@ interface Params {
     id: string; // URL에서 추출할 id는 string 타입입니다.
 }
 
-// formidable 설정
-export const config = {
-    api: {
-        bodyParser: false, // 기본 바디 파서를 비활성화하여 formidable 사용
-    },
-};
-
 //db에서정보얻어오는api
 export async function GET(req: NextRequest, { params }: { params: Params }) {
     const { id } = params; // URL 파라미터에서 id를 추출
